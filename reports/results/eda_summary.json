@@ -1,0 +1,25 @@
+{
+  "start_time": "2015-01-01 00:00:00+00:00",
+  "end_time": "2018-12-31 22:00:00+00:00",
+  "total_hourly_records": 35063,
+  "mean_demand_mw": 28698.375880557855,
+  "std_demand_mw": 4575.859894136498,
+  "min_demand_mw": 18041.0,
+  "max_demand_mw": 41015.0,
+  "weekday_mean_demand_mw": 29424.936978147096,
+  "weekend_mean_demand_mw": 26885.52192982456,
+  "weekend_drop_percentage": 8.630146090740897,
+  "peak_hour": 19,
+  "peak_hour_mean_mw": 32222.81279945243,
+  "trough_hour": 2,
+  "trough_hour_mean_mw": 22785.64271047228,
+  "mean_temperature_celsius": 16.55776830544308,
+  "saved_figure_files": [
+    "reports\\figures\\01_full_series.png",
+    "reports\\figures\\02_zoomed_week.png",
+    "reports\\figures\\03_zoomed_day.png",
+    "reports\\figures\\04_diurnal_weekly_monthly_profiles.png",
+    "reports\\figures\\05_seasonal_decomposition.png",
+    "reports\\figures\\06_acf_pacf.png"
+  ]
+}

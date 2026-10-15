@@ -1,0 +1,7 @@
+{
+  "quantile_coverage_pct": 92.48334919124643,
+  "quantile_mean_width_mw": 1902.2730712890625,
+  "optuna_best_val_rmse": 685.9731454291779,
+  "ga_best_val_rmse": 652.1180395449891,
+  "champion_test_rmse": 534.855237424109
+}

@@ -1,0 +1,83 @@
+# ==============================================================================
+# Global Configuration for Energy Demand Forecaster
+# ==============================================================================
+
+project:
+  name: "energy-demand-forecaster"
+  version: "1.0.0"
+  random_seeds: [42, 123, 456, 789, 999]
+  primary_seed: 42
+
+paths:
+  raw_data_dir: "data/raw"
+  processed_data_dir: "data/processed"
+  models_dir: "models"
+  reports_figures_dir: "reports/figures"
+  reports_results_dir: "reports/results"
+  spain_energy_raw: "data/raw/energy_dataset.csv"
+  spain_weather_raw: "data/raw/weather_features.csv"
+  pjm_energy_raw: "data/raw/PJME_hourly.csv"
+  spain_processed: "data/processed/spain_hourly_clean.parquet"
+  pjm_processed: "data/processed/pjm_hourly_clean.parquet"
+
+dataset:
+  target_col: "total_load_actual"
+  datetime_col: "time"
+  frequency: "1h"
+  # Chronological split: 70% Train, 15% Validation, 15% Test
+  split_dates:
+    train_start: "2015-01-01 00:00:00"
+    train_end: "2017-10-18 23:00:00"
+    val_start: "2017-10-19 00:00:00"
+    val_end: "2018-05-25 23:00:00"
+    test_start: "2018-05-26 00:00:00"
+    test_end: "2018-12-31 23:00:00"
+  features:
+    time_features: ["hour_sin", "hour_cos", "dayofweek_sin", "dayofweek_cos", "month_sin", "month_cos", "is_weekend", "is_holiday"]
+    weather_features: ["temp_mean", "humidity_mean", "wind_speed_mean", "pressure_mean", "clouds_all_mean"]
+    lag_hours: [24, 48, 168]
+    rolling_windows: [24, 168]
+
+windowing:
+  default_input_window: 24
+  long_input_window: 168
+  default_forecast_horizon: 1
+  multi_step_horizon: 24
+
+model_defaults:
+  rnn_type: "LSTM"
+  layer_units: [64, 32]
+  dropout: 0.2
+  learning_rate: 0.001
+  batch_size: 64
+  epochs: 30
+  loss: "mse"
+  early_stopping:
+    patience: 5
+    min_delta: 0.0001
+    restore_best_weights: true
+  reduce_lr:
+    factor: 0.5
+    patience: 3
+    min_lr: 0.00001
+
+tuning:
+  optuna:
+    n_trials: 15
+    study_name: "energy_forecaster_optuna"
+  genetic_algorithm:
+    population_size: 8
+    generations: 4
+    tournament_size: 2
+    mutation_rate: 0.25
+    crossover_rate: 0.8
+
+mlflow:
+  experiment_name: "energy-demand-forecaster"
+  tracking_uri: "sqlite:///mlruns.db"
+  registered_model_name: "EnergyDemandForecaster"
+
+drift:
+  metric: "rmse"
+  threshold_ratio: 1.25 # Raise flag if current rolling RMSE > 1.25 * validation RMSE
+  window_hours: 168 # 7-day rolling evaluation
